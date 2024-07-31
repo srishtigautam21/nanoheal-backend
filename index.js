@@ -15,6 +15,7 @@ app.use(cors());
 
 const URL = "https://openlibrary.org/search.json?title=";
 const DETAIL_URL = "https://openlibrary.org/works/";
+const AUTHOR_URL = "https://openlibrary.org/search/authors.json?q=";
 
 app.get("/", (req, res) => {
   res.status(200).send({
@@ -45,7 +46,7 @@ app.get("/book/bookSearch", async (req, res) => {
 
 app.get("/book/bookdetail", async (req, res) => {
   const bookId = req.query.bookId;
-  console.log("in server", bookId);
+
   const bookDetailUrl = `${DETAIL_URL}${bookId}.json`;
   const options = {
     method: "GET",
@@ -60,6 +61,27 @@ app.get("/book/bookdetail", async (req, res) => {
   } catch (e) {
     res.status(500).send({
       msg: "server error",
+    });
+  }
+});
+
+app.get("/author/authorSearch", async (req, res) => {
+  const authorName = req.query.authorName;
+  console.log("in server", authorName);
+  const authorUrl = `${AUTHOR_URL}${authorName}&limit=20`;
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const response = await fetch(authorUrl, options);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(500).send({
+      msg: "Server error",
     });
   }
 });
