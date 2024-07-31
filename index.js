@@ -16,6 +16,7 @@ app.use(cors());
 const URL = "https://openlibrary.org/search.json?title=";
 const DETAIL_URL = "https://openlibrary.org/works/";
 const AUTHOR_URL = "https://openlibrary.org/search/authors.json?q=";
+const AUTHOR_DETAIL = "https://openlibrary.org/authors/";
 
 app.get("/", (req, res) => {
   res.status(200).send({
@@ -67,7 +68,7 @@ app.get("/book/bookdetail", async (req, res) => {
 
 app.get("/author/authorSearch", async (req, res) => {
   const authorName = req.query.authorName;
-  console.log("in server", authorName);
+
   const authorUrl = `${AUTHOR_URL}${authorName}&limit=20`;
   const options = {
     method: "GET",
@@ -86,9 +87,29 @@ app.get("/author/authorSearch", async (req, res) => {
   }
 });
 
-// app.use(function (req, res, next) {
-//   res.sendFile(__dirname + "/public/index.html");
-// });
+app.get("/author/authordetail", async (req, res) => {
+  const authorId = req.query.authorId;
+  const authorDetailUrl = `${AUTHOR_DETAIL}${authorId}.json`;
+  const authorWorkUrl = `${AUTHOR_DETAIL}${authorId}/works.json?limit=10`;
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const response = await fetch(authorDetailUrl, options);
+    const data = await response.json();
+    const workResponse = await fetch(authorWorkUrl, options);
+    const workData = await workResponse.json();
+    res.status(200).json({ data, workData });
+    console.log("data", data, "workData", workData);
+  } catch (e) {
+    res.status(500).send({
+      msg: "server error",
+    });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
