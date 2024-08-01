@@ -18,9 +18,9 @@ This project is a server application built using the Node.js and Express. It dem
 ### Working
 
 - On searching books name (ex-da vinci code, pride and prejudice) from frontend a GET API request
-  is called at ${BackendURLGivenAbove}/book/bookSearch?bookName=${your_bookname}. This returns a list of first 20 related books to the search.
+  is called at **${BackendURLGivenAbove}/book/bookSearch?bookName=${your_bookname}**. This returns a list of first 20 related books to the search.
 
-- On click of any book-card you a GET API request is called at ${BackendURLGivenAbove}/book/bookdetail?bookId=${specificIdOfThatBook}. This will return all the detail of that book.
+- On click of any book-card a GET API request is called at **${BackendURLGivenAbove}/book/bookdetail?bookId=${specificIdOfThatBook}**. This will return all the detail of that book.
 
 - Similar working for authors.
 

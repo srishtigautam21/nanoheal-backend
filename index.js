@@ -6,12 +6,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-// if (process.env.NODE_ENV !== "production") {
 app.use(cors());
-// }
-
-//static folder
-// app.use(express.static(__dirname + "/public"));
 
 const URL = "https://openlibrary.org/search.json?title=";
 const DETAIL_URL = "https://openlibrary.org/works/";
@@ -33,7 +28,6 @@ app.get("/book/bookSearch", async (req, res) => {
       "Content-Type": "application/json",
     },
   };
-  console.log(bookName);
   try {
     const response = await fetch(searchUrl, options);
     const data = await response.json();
@@ -103,7 +97,6 @@ app.get("/author/authordetail", async (req, res) => {
     const workResponse = await fetch(authorWorkUrl, options);
     const workData = await workResponse.json();
     res.status(200).json({ data, workData });
-    console.log("data", data, "workData", workData);
   } catch (e) {
     res.status(500).send({
       msg: "server error",
